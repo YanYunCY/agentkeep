@@ -8,28 +8,7 @@ your `env` block or your `model_providers`, and you find out mid-task.
 agentkeep snapshots the settings that matter, tells you exactly what went
 missing, and puts it back without touching anything else.
 
-```
-$ npx agentkeep check
-snapshot from 11/10/2026, 4:12:29 PM
-
-✗ claude/settings  ~/.claude/settings.json  settings lost
-    - removed  hooks.PreToolUse  was [2 items]
-    - removed  statusLine  was {2 keys}
-    - emptied  env.ANTHROPIC_BASE_URL  was "https://relay.example.com"
-✗ claude/state     ~/.claude.json  settings lost
-    - removed  mcpServers.box  was {2 keys}
-✗ codex/config     ~/.codex/config.toml  settings lost
-    - removed  notify  was [2 items]
-✗ gemini/settings  ~/.gemini/settings.json  file missing
-
-Run agentkeep restore to put the lost settings back.
-
-$ npx agentkeep restore
-↺ claude/settings  ~/.claude/settings.json  restored 3 settings
-↺ claude/state     ~/.claude.json  restored 1 setting
-↺ codex/config     ~/.codex/config.toml  restored 1 setting
-↺ gemini/settings  ~/.gemini/settings.json  file restored from snapshot
-```
+<p align="center"><img src="demo/demo.gif" width="720" alt="agentkeep check finds hooks, MCP servers and an env var lost after an update; agentkeep restore puts them back"></p>
 
 ## Use
 
@@ -67,9 +46,10 @@ changed. `CLAUDE_CONFIG_DIR` and `CODEX_HOME` are respected.
 
 - **Backup before every write**, in `~/.agentkeep/backups/`.
 - **Formatting is kept.** JSON keeps its indentation, line endings and key
-  order. Settings missing from TOML are added as text, so your comments stay;
-  if a value has to be replaced in TOML, the file is rewritten and agentkeep
-  says so.
+  order, and a restored key goes back where it was. Settings missing from TOML
+  are added as text, so your comments stay (a restored table goes at the end of
+  the file); if a value has to be replaced in TOML, the file is rewritten and
+  agentkeep says so.
 - **Broken files are never overwritten.** A file that doesn't parse, or JSON
   with comments, is reported and skipped.
 - **Every write is checked.** After restoring, the file is read back; if the
@@ -87,6 +67,7 @@ changed. `CLAUDE_CONFIG_DIR` and `CODEX_HOME` are respected.
 | `AGENTKEEP_DIR` | `~/.agentkeep` |
 | `AGENTKEEP_HOME` | your home directory (where the tools' files are looked for) |
 | `NO_COLOR` | set to turn colors off |
+| `FORCE_COLOR` | set to keep colors when output is piped (`0` turns them off) |
 
 Node.js 18 or newer. macOS, Linux and Windows.
 

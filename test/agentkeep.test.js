@@ -233,3 +233,16 @@ test('a restored JSON key goes back where it was', () => {
   restore({ env, tools: ['gemini'] });
   assert.equal(read('.gemini/settings.json'), JSON.stringify(orig, null, 2) + '\n');
 });
+
+test('NO_COLOR and FORCE_COLOR follow the usual conventions', async () => {
+  const { useColor } = await import('../src/cli.js');
+  assert.equal(useColor({}, true), true);
+  assert.equal(useColor({}, false), false);
+  assert.equal(useColor({ NO_COLOR: '1' }, true), false);
+  assert.equal(useColor({ NO_COLOR: '' }, true), true, 'empty NO_COLOR does not disable, per no-color.org');
+  assert.equal(useColor({ FORCE_COLOR: '1' }, false), true);
+  assert.equal(useColor({ FORCE_COLOR: '0' }, true), false);
+  assert.equal(useColor({ FORCE_COLOR: 'false' }, true), false);
+  assert.equal(useColor({ FORCE_COLOR: '' }, false), false);
+  assert.equal(useColor({ NO_COLOR: '1', FORCE_COLOR: '1' }, false), false);
+});

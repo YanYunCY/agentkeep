@@ -1,1 +1,4 @@
 node_modules/
+__pycache__/
+# local preview written by demo/render.py
+demo/last-frame.png

@@ -1,0 +1,55 @@
+[
+  {
+    "cmd": "npx agentkeep snapshot",
+    "out": [
+      "\u001b[32m✓\u001b[0m \u001b[1mclaude/settings \u001b[0m \u001b[2m~/.claude/settings.json\u001b[0m  6 settings saved",
+      "\u001b[32m✓\u001b[0m \u001b[1mclaude/state    \u001b[0m \u001b[2m~/.claude.json\u001b[0m  2 settings saved",
+      "\u001b[32m✓\u001b[0m \u001b[1mcodex/config    \u001b[0m \u001b[2m~/.codex/config.toml\u001b[0m  4 settings saved",
+      "\u001b[32m✓\u001b[0m \u001b[1mgemini/settings \u001b[0m \u001b[2m~/.gemini/settings.json\u001b[0m  1 setting saved"
+    ]
+  },
+  {
+    "cmd": null,
+    "out": [],
+    "note": "# ...a few days and one CLI update later"
+  },
+  {
+    "cmd": "npx agentkeep check",
+    "out": [
+      "\u001b[31m✗\u001b[0m \u001b[1mclaude/settings \u001b[0m \u001b[2m~/.claude/settings.json\u001b[0m  \u001b[31msettings lost\u001b[0m",
+      "    \u001b[31m- removed\u001b[0m  hooks.PreToolUse  \u001b[2mwas [1 item]\u001b[0m",
+      "    \u001b[31m- emptied\u001b[0m  env.ANTHROPIC_BASE_URL  \u001b[2mwas \"https://relay.example.com\"\u001b[0m",
+      "\u001b[31m✗\u001b[0m \u001b[1mclaude/state    \u001b[0m \u001b[2m~/.claude.json\u001b[0m  \u001b[31msettings lost\u001b[0m",
+      "    \u001b[31m- removed\u001b[0m  mcpServers.github  \u001b[2mwas {1 key}\u001b[0m",
+      "    \u001b[31m- removed\u001b[0m  mcpServers.postgres  \u001b[2mwas {1 key}\u001b[0m",
+      "\u001b[31m✗\u001b[0m \u001b[1mcodex/config    \u001b[0m \u001b[2m~/.codex/config.toml\u001b[0m  \u001b[31msettings lost\u001b[0m",
+      "    \u001b[31m- removed\u001b[0m  mcp_servers.github  \u001b[2mwas {1 key}\u001b[0m",
+      "\u001b[32m✓\u001b[0m \u001b[1mgemini/settings \u001b[0m \u001b[2m~/.gemini/settings.json\u001b[0m  \u001b[32mok\u001b[0m",
+      "",
+      "Run \u001b[1magentkeep restore\u001b[0m to put the lost settings back."
+    ]
+  },
+  {
+    "cmd": "npx agentkeep restore",
+    "out": [
+      "\u001b[32m↺\u001b[0m \u001b[1mclaude/settings \u001b[0m \u001b[2m~/.claude/settings.json\u001b[0m  restored 2 settings",
+      "    hooks.PreToolUse",
+      "    env.ANTHROPIC_BASE_URL",
+      "\u001b[32m↺\u001b[0m \u001b[1mclaude/state    \u001b[0m \u001b[2m~/.claude.json\u001b[0m  restored 2 settings",
+      "    mcpServers.github",
+      "    mcpServers.postgres",
+      "\u001b[32m↺\u001b[0m \u001b[1mcodex/config    \u001b[0m \u001b[2m~/.codex/config.toml\u001b[0m  restored 1 setting",
+      "    mcp_servers.github",
+      "\u001b[32m✓\u001b[0m \u001b[1mgemini/settings \u001b[0m \u001b[2m~/.gemini/settings.json\u001b[0m  nothing to restore"
+    ]
+  },
+  {
+    "cmd": "npx agentkeep check",
+    "out": [
+      "\u001b[32m✓\u001b[0m \u001b[1mclaude/settings \u001b[0m \u001b[2m~/.claude/settings.json\u001b[0m  \u001b[32mok\u001b[0m",
+      "\u001b[32m✓\u001b[0m \u001b[1mclaude/state    \u001b[0m \u001b[2m~/.claude.json\u001b[0m  \u001b[32mok\u001b[0m",
+      "\u001b[32m✓\u001b[0m \u001b[1mcodex/config    \u001b[0m \u001b[2m~/.codex/config.toml\u001b[0m  \u001b[32mok\u001b[0m",
+      "\u001b[32m✓\u001b[0m \u001b[1mgemini/settings \u001b[0m \u001b[2m~/.gemini/settings.json\u001b[0m  \u001b[32mok\u001b[0m"
+    ]
+  }
+]
