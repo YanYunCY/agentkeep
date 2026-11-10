@@ -67,9 +67,10 @@ changed. `CLAUDE_CONFIG_DIR` and `CODEX_HOME` are respected.
 
 - **Backup before every write**, in `~/.agentkeep/backups/`.
 - **Formatting is kept.** JSON keeps its indentation, line endings and key
-  order. Settings missing from TOML are added as text, so your comments stay;
-  if a value has to be replaced in TOML, the file is rewritten and agentkeep
-  says so.
+  order, and a restored key goes back where it was. Settings missing from TOML
+  are added as text, so your comments stay (a restored table goes at the end of
+  the file); if a value has to be replaced in TOML, the file is rewritten and
+  agentkeep says so.
 - **Broken files are never overwritten.** A file that doesn't parse, or JSON
   with comments, is reported and skipped.
 - **Every write is checked.** After restoring, the file is read back; if the
