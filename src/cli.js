@@ -4,7 +4,7 @@ import { check, isDamaged, restore, select, snapshot } from './core.js';
 import { storeDir } from './targets.js';
 import { isObj, pathLabel } from './values.js';
 
-const color = process.stdout.isTTY && !process.env.NO_COLOR;
+const color = !process.env.NO_COLOR && (process.stdout.isTTY || Boolean(process.env.FORCE_COLOR));
 const paint = (code) => (s) => (color ? `\x1b[${code}m${s}\x1b[0m` : String(s));
 const red = paint(31), green = paint(32), yellow = paint(33), dim = paint(2), bold = paint(1);
 

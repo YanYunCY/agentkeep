@@ -8,28 +8,7 @@ your `env` block or your `model_providers`, and you find out mid-task.
 agentkeep snapshots the settings that matter, tells you exactly what went
 missing, and puts it back without touching anything else.
 
-```
-$ npx agentkeep check
-snapshot from 11/10/2026, 4:12:29 PM
-
-✗ claude/settings  ~/.claude/settings.json  settings lost
-    - removed  hooks.PreToolUse  was [2 items]
-    - removed  statusLine  was {2 keys}
-    - emptied  env.ANTHROPIC_BASE_URL  was "https://relay.example.com"
-✗ claude/state     ~/.claude.json  settings lost
-    - removed  mcpServers.box  was {2 keys}
-✗ codex/config     ~/.codex/config.toml  settings lost
-    - removed  notify  was [2 items]
-✗ gemini/settings  ~/.gemini/settings.json  file missing
-
-Run agentkeep restore to put the lost settings back.
-
-$ npx agentkeep restore
-↺ claude/settings  ~/.claude/settings.json  restored 3 settings
-↺ claude/state     ~/.claude.json  restored 1 setting
-↺ codex/config     ~/.codex/config.toml  restored 1 setting
-↺ gemini/settings  ~/.gemini/settings.json  file restored from snapshot
-```
+<p align="center"><img src="demo/demo.gif" width="720" alt="agentkeep check finds hooks, MCP servers and an env var lost after an update; agentkeep restore puts them back"></p>
 
 ## Use
 
