@@ -1,0 +1,13 @@
+{
+  "name": "agentkeep",
+  "version": "0.1.0",
+  "description": "Keep Claude Code, Codex and Gemini CLI settings from being wiped by updates: snapshot, check, restore, watch.",
+  "type": "module",
+  "bin": { "agentkeep": "bin/agentkeep.js" },
+  "files": ["bin", "src", "README.md", "LICENSE"],
+  "scripts": { "test": "node --test" },
+  "engines": { "node": ">=18" },
+  "keywords": ["claude-code", "codex", "gemini-cli", "mcp", "config", "backup", "restore", "ai-agents"],
+  "license": "MIT",
+  "dependencies": { "smol-toml": "1.9.1" }
+}
