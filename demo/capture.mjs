@@ -2,7 +2,7 @@
 // update does, and records the real agentkeep output (with colors) for each
 // step into demo/transcript.json. render.py turns that into the README GIF.
 //
-//   node demo/capture.mjs && python demo/render.py
+//   npm run demo        # node demo/capture.mjs && python demo/render.py
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -46,7 +46,10 @@ const run = (args) => {
   try {
     return execFileSync(process.execPath, [bin, ...args], { env, encoding: 'utf8' });
   } catch (err) {
-    return err.stdout;
+    // check exits 2 when settings are lost; that output is what we want.
+    // Anything else (a crash, no output) should stop the demo, not hide.
+    if (err.status === 2 && err.stdout) return err.stdout;
+    throw new Error(`agentkeep ${args.join(' ')} failed (exit ${err.status}): ${err.stderr || err.message}`);
   }
 };
 const steps = [];

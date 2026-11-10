@@ -67,6 +67,7 @@ changed. `CLAUDE_CONFIG_DIR` and `CODEX_HOME` are respected.
 | `AGENTKEEP_DIR` | `~/.agentkeep` |
 | `AGENTKEEP_HOME` | your home directory (where the tools' files are looked for) |
 | `NO_COLOR` | set to turn colors off |
+| `FORCE_COLOR` | set to keep colors when output is piped (`0` turns them off) |
 
 Node.js 18 or newer. macOS, Linux and Windows.
 

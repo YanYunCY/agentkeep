@@ -1,5 +1,4 @@
 node_modules/
-demo/last-frame.png
-demo/check-frame.png
-launch-posts.md
 __pycache__/
+# local preview written by demo/render.py
+demo/last-frame.png

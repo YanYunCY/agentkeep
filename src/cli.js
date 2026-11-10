@@ -4,7 +4,14 @@ import { check, isDamaged, restore, select, snapshot } from './core.js';
 import { storeDir } from './targets.js';
 import { isObj, pathLabel } from './values.js';
 
-const color = !process.env.NO_COLOR && (process.stdout.isTTY || Boolean(process.env.FORCE_COLOR));
+// NO_COLOR (any non-empty value) turns colors off; FORCE_COLOR keeps them on
+// when output is piped, unless it is "0" or "false".
+export function useColor(env = process.env, isTTY = process.stdout.isTTY) {
+  if (env.NO_COLOR) return false;
+  if (env.FORCE_COLOR !== undefined && env.FORCE_COLOR !== '') return !['0', 'false'].includes(env.FORCE_COLOR);
+  return Boolean(isTTY);
+}
+const color = useColor();
 const paint = (code) => (s) => (color ? `\x1b[${code}m${s}\x1b[0m` : String(s));
 const red = paint(31), green = paint(32), yellow = paint(33), dim = paint(2), bold = paint(1);
 

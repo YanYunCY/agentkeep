@@ -1,11 +1,12 @@
 """Render demo/transcript.json (real agentkeep output) as a terminal GIF.
 
-    node demo/capture.mjs && python demo/render.py
+    pip install -r demo/requirements.txt
+    npm run demo        # node demo/capture.mjs && python demo/render.py
 
 Commands are "typed" a few characters per frame; command output appears at
-once, as it does in a real terminal. Needs Pillow and the Cascadia Mono and
-Segoe UI Symbol fonts (Windows); set AGENTKEEP_FONT / AGENTKEEP_SYMBOL_FONT to
-use others.
+once, as it does in a real terminal. The committed GIF uses Cascadia Mono and
+Segoe UI Symbol (Windows). Elsewhere the first installed match from the lists
+below is used, or set AGENTKEEP_FONT / AGENTKEEP_SYMBOL_FONT to a .ttf path.
 """
 import json
 import os
@@ -15,8 +16,33 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 HERE = Path(__file__).parent
-FONT = os.environ.get("AGENTKEEP_FONT", "C:/Windows/Fonts/CascadiaMono.ttf")
-SYMBOL = os.environ.get("AGENTKEEP_SYMBOL_FONT", "C:/Windows/Fonts/seguisym.ttf")
+MONO_FONTS = [
+    "C:/Windows/Fonts/CascadiaMono.ttf",
+    "/System/Library/Fonts/Menlo.ttc",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+    "/usr/share/fonts/TTF/DejaVuSansMono.ttf",
+    "/usr/share/fonts/dejavu-sans-mono-fonts/DejaVuSansMono.ttf",
+]
+SYMBOL_FONTS = [
+    "C:/Windows/Fonts/seguisym.ttf",
+    "/System/Library/Fonts/Apple Symbols.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    "/usr/share/fonts/TTF/DejaVuSans.ttf",
+    "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans.ttf",
+]
+
+
+def pick_font(env, candidates):
+    if os.environ.get(env):
+        return os.environ[env]
+    for path in candidates:
+        if os.path.exists(path):
+            return path
+    raise SystemExit(f"No font found for {env}; set it to a .ttf path (tried: {', '.join(candidates)})")
+
+
+FONT = pick_font("AGENTKEEP_FONT", MONO_FONTS)
+SYMBOL = pick_font("AGENTKEEP_SYMBOL_FONT", SYMBOL_FONTS)
 SIZE = 15
 COLS, ROWS = 76, 22
 PAD_X, PAD_TOP, PAD_BOTTOM = 18, 44, 16
@@ -30,7 +56,6 @@ PROMPT = (110, 170, 255)
 NOTE = (150, 156, 170)
 
 font = ImageFont.truetype(FONT, SIZE)
-bold = ImageFont.truetype(FONT.replace("Mono.ttf", "Mono.ttf"), SIZE)
 symbol = ImageFont.truetype(SYMBOL, SIZE - 1)
 mark_font = ImageFont.truetype(SYMBOL, SIZE + 1)
 MARKS = "✓✗↺"
@@ -84,6 +109,8 @@ def draw_line(d, row, runs):
                 for dx in (0, 1):
                     d.text((x + (CW - w) / 2 + dx, y), ch, font=mark_font, fill=color)
             elif has_glyph(ch):
+                # Bold is faked by drawing the glyph twice, 1px apart, so the
+                # demo needs only one font file.
                 d.text((x, y), ch, font=font, fill=color)
                 if is_bold:
                     d.text((x + 1, y), ch, font=font, fill=color)
@@ -128,8 +155,6 @@ def main():
             lines.append([(step["note"], NOTE, False)])
             add(frame(lines), 1600)
             continue
-        if i and step["cmd"] == "npx agentkeep check" and steps[i - 1]["cmd"] == "npx agentkeep restore":
-            pass
         if lines:
             lines.append([])
         prompt = [("$ ", PROMPT, True)]
@@ -141,8 +166,6 @@ def main():
             add(frame(lines, cursor=2 + n), 45)
         lines[-1] = prompt + [(cmd, FG, False)]
         add(frame(lines, cursor=2 + len(cmd)), 450)
-        lines.append([])
-        lines.pop()
         for out in step["out"]:
             lines.append(parse_ansi(out))
         hold = 3800 if "check" in cmd else 2600
